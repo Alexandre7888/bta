@@ -1196,5 +1196,242 @@
             }
         });
     </script>
+<!-- Adicione esta seção dentro do <div class="content"> após as outras seções: -->
+<div class="section">
+    <h2><i class="fas fa-code"></i> Gerar Botão de Download</h2>
+    
+    <div style="margin-bottom: 20px;">
+        <p style="color: #64748b; margin-bottom: 15px;">
+            Gere um botão de download personalizado para colocar no seu site!
+        </p>
+        
+        <input type="text" id="buttonFileId" placeholder="ID do arquivo" 
+               style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; margin-bottom: 15px;">
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+            <button class="button-style-option" data-style="default" onclick="selectButtonStyle('default')" style="background: #4f46e5; color: white; padding: 10px; border-radius: 6px; border: none; cursor: pointer;">
+                Padrão
+            </button>
+            <button class="button-style-option" data-style="modern" onclick="selectButtonStyle('modern')" style="background: #10b981; color: white; padding: 10px; border-radius: 6px; border: none; cursor: pointer;">
+                Moderno
+            </button>
+            <button class="button-style-option" data-style="minimal" onclick="selectButtonStyle('minimal')" style="background: #3b82f6; color: white; padding: 10px; border-radius: 6px; border: none; cursor: pointer;">
+                Minimalista
+            </button>
+        </div>
+        
+        <button class="button" onclick="generateButtonCode()" style="background: #8b5cf6;">
+            <i class="fas fa-magic"></i> Gerar Código do Botão
+        </button>
+    </div>
+    
+    <div id="buttonPreviewContainer" style="display: none;">
+        <h3 style="color: #334155; margin-bottom: 15px;">Preview do Botão:</h3>
+        <div id="buttonPreview" style="text-align: center; padding: 20px; background: #f8fafc; border-radius: 10px; margin-bottom: 15px;">
+            <!-- O botão preview aparecerá aqui -->
+        </div>
+        
+        <h3 style="color: #334155; margin-bottom: 10px;">Código HTML para copiar:</h3>
+        <div style="position: relative;">
+            <pre id="buttonCode" style="background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 8px; font-size: 14px; overflow-x: auto; max-height: 200px; margin-bottom: 15px;"></pre>
+            <button onclick="copyButtonCode()" style="position: absolute; top: 10px; right: 10px; background: #4f46e5; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                <i class="fas fa-copy"></i> Copiar
+            </button>
+        </div>
+        
+        <p style="font-size: 12px; color: #64748b;">
+            <i class="fas fa-info-circle"></i> Cole este código em qualquer site para ter um botão de download estilizado!
+        </p>
+    </div>
+</div>
+
+<script>
+// Adicione estas funções ao seu script:
+
+let selectedButtonStyle = 'default';
+
+function selectButtonStyle(style) {
+    selectedButtonStyle = style;
+    
+    // Remover classe ativa de todos
+    document.querySelectorAll('.button-style-option').forEach(btn => {
+        btn.style.opacity = '0.7';
+        btn.style.transform = 'scale(0.95)';
+    });
+    
+    // Adicionar classe ativa ao selecionado
+    const selectedBtn = document.querySelector(`[data-style="${style}"]`);
+    selectedBtn.style.opacity = '1';
+    selectedBtn.style.transform = 'scale(1)';
+}
+
+function generateButtonCode() {
+    const fileId = document.getElementById('buttonFileId').value.trim();
+    
+    if (!fileId) {
+        showNotification('❌ Digite o ID do arquivo');
+        return;
+    }
+    
+    const currentUrl = window.location.href.split('?')[0];
+    const downloadUrl = `${currentUrl}?bta=${fileId}`;
+    
+    // Estilos dos botões
+    const buttonStyles = {
+        default: {
+            html: `<a href="${downloadUrl}" style="display: inline-block; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);" 
+                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(79, 70, 229, 0.4)';" 
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(79, 70, 229, 0.3)';">
+                   <i class="fas fa-download"></i> Baixar Arquivo
+                   </a>`,
+            css: `/* Estilo do botão padrão */
+a.bta-download-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+a.bta-download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}`
+        },
+        
+        modern: {
+            html: `<a href="${downloadUrl}" style="display: inline-block; background: #10b981; color: white; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 16px; transition: all 0.3s; position: relative; overflow: hidden;" 
+                   onmouseover="this.style.background='#059669'; this.style.padding='16px 40px 16px 24px';" 
+                   onmouseout="this.style.background='#10b981'; this.style.padding='16px 32px';">
+                   <span style="margin-right: 10px;">⬇️</span> Download Gratuito
+                   <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%);">→</span>
+                   </a>`,
+            css: `/* Estilo do botão moderno */
+a.bta-download-button {
+    display: inline-block;
+    background: #10b981;
+    color: white;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+a.bta-download-button:hover {
+    background: #059669;
+    padding: 16px 40px 16px 24px;
+}
+
+a.bta-download-button span.arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}`
+        },
+        
+        minimal: {
+            html: `<a href="${downloadUrl}" style="display: inline-block; background: white; color: #3b82f6; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 15px; border: 2px solid #3b82f6; transition: all 0.3s;" 
+                   onmouseover="this.style.background='#3b82f6'; this.style.color='white';" 
+                   onmouseout="this.style.background='white'; this.style.color='#3b82f6';">
+                   <i class="fas fa-download" style="margin-right: 8px;"></i>Download Direto
+                   </a>`,
+            css: `/* Estilo do botão minimalista */
+a.bta-download-button {
+    display: inline-block;
+    background: white;
+    color: #3b82f6;
+    padding: 14px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border: 2px solid #3b82f6;
+    transition: all 0.3s;
+}
+
+a.bta-download-button:hover {
+    background: #3b82f6;
+    color: white;
+}`
+        }
+    };
+    
+    // Mostrar preview
+    const previewContainer = document.getElementById('buttonPreviewContainer');
+    const previewDiv = document.getElementById('buttonPreview');
+    const codeDiv = document.getElementById('buttonCode');
+    
+    previewDiv.innerHTML = buttonStyles[selectedButtonStyle].html;
+    
+    // Gerar código completo
+    const fullCode = `<!-- Botão de Download BTA -->
+<!-- Cole este código no seu site -->
+${buttonStyles[selectedButtonStyle].html}
+
+<!-- Adicione este CSS no seu site para melhor aparência -->
+<style>
+${buttonStyles[selectedButtonStyle].css}
+
+/* Opcional: Ícone do Font Awesome se não tiver */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+</style>`;
+    
+    codeDiv.textContent = fullCode;
+    previewContainer.style.display = 'block';
+    
+    // Destacar a sintaxe
+    hljs.highlightElement(codeDiv);
+    
+    showNotification('✅ Código do botão gerado! Copie e cole no seu site.');
+}
+
+function copyButtonCode() {
+    const codeDiv = document.getElementById('buttonCode');
+    const text = codeDiv.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification('✅ Código copiado para a área de transferência!');
+        
+        // Feedback visual
+        const copyBtn = document.querySelector('#buttonCode + button');
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+        copyBtn.style.background = '#10b981';
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copiar';
+            copyBtn.style.background = '#4f46e5';
+        }, 2000);
+    }).catch(() => {
+        // Fallback para navegadores antigos
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showNotification('✅ Código copiado!');
+    });
+}
+
+// Inicializar estilos dos botões
+window.onload = function() {
+    if (!checkViewMode()) {
+        initUploader();
+        loadMyFiles();
+        // Selecionar estilo padrão
+        selectButtonStyle('default');
+    }
+};
+</script>
 </body>
 </html>
